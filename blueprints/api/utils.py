@@ -3,8 +3,11 @@ import functools
 import jwt
 from flask import jsonify, request
 
-from blueprints import app
+from blueprints import create_app
 from blueprints.models import Post, User
+
+
+app = create_app()
 
 
 def error(msg: str, code: int):

@@ -5,8 +5,10 @@ from random import choice
 import mimesis
 from flask import request
 
-from blueprints import app
+from blueprints import create_app
 from blueprints.models import Post, User, database
+
+app = create_app(testing=True)
 
 
 MODELS = [Post, User]

@@ -5,13 +5,9 @@ from playhouse.migrate import PostgresqlMigrator
 from playhouse.shortcuts import model_to_dict
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from blueprints import app
 
 database = peewee.PostgresqlDatabase(None)
-database.init(database=app.config['DATABASE'],
-              user=app.config['DB_USER'],
-              password=app.config['DB_PASSWORD'],
-              host='localhost')
+
 
 migrator = PostgresqlMigrator(database)
 
@@ -85,11 +81,13 @@ class Post(BaseModel):
         allowed_fields = 'title text pub_date'.split()
 
 
-def create_tables():
+def create_tables(app, drop_tables=False, testing=False):
+    db = app.config['DATABASE'] if not testing else app.config['TEST_DATABASE']
+    database.init(database=db,
+                  user=app.config['DB_USER'],
+                  password=app.config['DB_PASSWORD'],
+                  host='localhost')
     with database:
-        database.drop_tables([Post, User])
+        if drop_tables:
+            database.drop_tables([Post, User])
         database.create_tables([Post, User])
-
-
-if __name__ == '__main__':
-    create_tables()
