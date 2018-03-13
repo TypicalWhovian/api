@@ -5,7 +5,7 @@ from random import choice
 import mimesis
 
 from blueprints import create_app
-from blueprints.models import Post, User, database
+from blueprints.models import Post, User
 
 app = create_app(testing=True)
 
@@ -52,13 +52,7 @@ class AdminRegistrationTests(unittest.TestCase):
             })
 
     def setUp(self):
-        app.testing = True
-        self.app = app.test_client()
-        database.init(database=app.config['TEST_DATABASE'],
-                      user=app.config['DB_USER'],
-                      password=app.config['DB_PASSWORD'],
-                      host='localhost')
-        database.create_tables(MODELS)
+        self.app, self.db = create_app(testing=True)
         username, password = p.username(), p.password()
         User.from_dict(dict(username=username, email=p.email(),
                             password=password, is_admin=True))
@@ -66,8 +60,8 @@ class AdminRegistrationTests(unittest.TestCase):
         self.headers = {'x-access-token': self.admin['token']}
 
     def tearDown(self):
-        database.drop_tables(MODELS)
-        database.close()
+        self.db.drop_tables(MODELS)
+        self.db.close()
 
     def test_registration(self):
         self.assertAlmostEqual(User.select().count(), 1)

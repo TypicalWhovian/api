@@ -1,9 +1,8 @@
 import datetime
 
 import jwt
-from flask import jsonify, request
+from flask import current_app, jsonify, request
 
-from app import app
 from blueprints.api.utils import create_user, data_required, error, message, post_exists, token_required
 from blueprints.models import Post, User
 from . import api
@@ -31,7 +30,7 @@ def auth_login():
     token = jwt.encode({
         'id': user.get_id(),
         'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=2)
-    }, app.config['SECRET_KEY'], algorithm='HS256')
+    }, current_app.config['SECRET_KEY'], algorithm='HS256')
     data = user.to_dict()
     data['token'] = token.decode('UTF-8')
     return jsonify(data), 200

@@ -1,13 +1,9 @@
 import functools
 
 import jwt
-from flask import jsonify, request
+from flask import current_app, jsonify, request
 
-from blueprints import create_app
 from blueprints.models import Post, User
-
-
-app = create_app()
 
 
 def error(msg: str, code: int):
@@ -26,7 +22,8 @@ def token_required(admin_required=False, return_user=True):
             if token is None:
                 return error('Token is missing.', 401)
             try:
-                data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=['HS256'])
+                data = jwt.decode(token, current_app.config['SECRET_KEY'],
+                                  algorithms=['HS256'])
             except jwt.InvalidTokenError:
                 return error('Token is invalid.', 401)
             user = User.get_by_id(data['id'])

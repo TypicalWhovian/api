@@ -5,7 +5,6 @@ from playhouse.migrate import PostgresqlMigrator
 from playhouse.shortcuts import model_to_dict
 from werkzeug.security import check_password_hash, generate_password_hash
 
-
 database = peewee.PostgresqlDatabase(None)
 
 
@@ -91,3 +90,5 @@ def create_tables(app, drop_tables=False, testing=False):
         if drop_tables:
             database.drop_tables([Post, User])
         database.create_tables([Post, User])
+    if testing:
+        return database

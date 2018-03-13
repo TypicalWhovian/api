@@ -6,10 +6,7 @@ import mimesis
 from flask import request
 
 from blueprints import create_app
-from blueprints.models import Post, User, database
-
-app = create_app(testing=True)
-
+from blueprints.models import Post, User
 
 MODELS = [Post, User]
 URL = '/api'
@@ -37,17 +34,11 @@ class RegistrationTests(unittest.TestCase):
         return self.app.post(f'{URL}/auth/login', data=data, mimetype='application/json')
 
     def setUp(self):
-        app.testing = True
-        self.app = app.test_client()
-        database.init(database=app.config['TEST_DATABASE'],
-                      user=app.config['DB_USER'],
-                      password=app.config['DB_PASSWORD'],
-                      host='localhost')
-        database.create_tables(MODELS)
+        self.app, self.db = create_app(testing=True)
 
     def tearDown(self):
-        database.drop_tables(MODELS)
-        database.close()
+        self.db.drop_tables(MODELS)
+        self.db.close()
 
     def test_registration(self):
         username, email, password = p.username(), p.email(), p.password()
@@ -96,13 +87,7 @@ class PostUserRelatedTests(unittest.TestCase):
         return r.status_code, json.loads(r.get_data())
 
     def setUp(self):
-        app.testing = True
-        self.app = app.test_client()
-        database.init(database=app.config['TEST_DATABASE'],
-                      user=app.config['DB_USER'],
-                      password=app.config['DB_PASSWORD'],
-                      host='localhost')
-        database.create_tables(MODELS)
+        self.app, self.db = create_app(testing=True)
         username, email, password = p.username(), p.email(), p.password()
         self.post(f'{URL}/auth/register', username=username, email=email, password=password)
         _, data = self.post(f'{URL}/auth/login', username=username, email=email, password=password)
@@ -112,8 +97,8 @@ class PostUserRelatedTests(unittest.TestCase):
                                                title=t.title(), text=t.text())
 
     def tearDown(self):
-        database.drop_tables(MODELS)
-        database.close()
+        self.db.drop_tables(MODELS)
+        self.db.close()
 
     def test_add_post(self):
         # created
