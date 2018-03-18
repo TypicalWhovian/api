@@ -7,8 +7,6 @@ import mimesis
 from blueprints import create_app
 from blueprints.models import Post, User
 
-app = create_app(testing=True)
-
 MODELS = [Post, User]
 URL = '/api'
 
@@ -21,7 +19,8 @@ class AdminRegistrationTests(unittest.TestCase):
 
     def post(self, url, headers=None, **data):
         data = json.dumps(data)
-        r = self.app.post(url, data=data, headers=headers, mimetype='application/json')
+        r = self.app.post(url, data=data, headers=headers,
+                          mimetype='application/json')
         return r.status_code, json.loads(r.get_data())
 
     def get(self, url, headers):
@@ -98,7 +97,8 @@ class AdminRegistrationTests(unittest.TestCase):
         seventh_user = User.get_by_id(7)
         self.assertTrue(seventh_user.posts.count() > 0)
         data = {'delete_posts': True}
-        code, msg = self.delete(f'{self.link}/user/7', self.headers, 'application/json', data)
+        code, msg = self.delete(f'{self.link}/user/7', self.headers,
+                                'application/json', data)
         self.assertAlmostEqual(code, 200)
         num_of_posts = Post.select().where(Post.author == seventh_user).count()
         self.assertAlmostEqual(num_of_posts, 0)
@@ -114,7 +114,8 @@ class AdminRegistrationTests(unittest.TestCase):
         code, _ = self.get(f'{self.link}/user/40/post/100', self.headers)
         self.assertAlmostEqual(code, 404)
         post_id = User.get_by_id(2).posts.first().get_id()
-        code, post = self.get(f'{self.link}/user/2/post/{post_id}', self.headers)
+        code, post = self.get(f'{self.link}/user/2/post/{post_id}',
+                              self.headers)
         self.assertAlmostEqual(code, 200)
         self.assertDictEqual(post, Post.get_by_id(post_id).to_dict())
         code, _ = self.get(f'{self.link}/user/2/post/70', self.headers)
@@ -143,7 +144,8 @@ class AdminRegistrationTests(unittest.TestCase):
         post_id = User.get_by_id(2).posts.first().get_id()
         code, _ = self.delete(f'{self.link}/user/2/post/70', self.headers)
         self.assertAlmostEqual(code, 404)
-        code, post = self.delete(f'{self.link}/user/2/post/{post_id}', self.headers)
+        code, post = self.delete(f'{self.link}/user/2/post/{post_id}',
+                                 self.headers)
         self.assertAlmostEqual(code, 200)
         self.assertIs(None, Post.select().where(Post.id == post_id).first())
 
