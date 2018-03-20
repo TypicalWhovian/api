@@ -4,8 +4,8 @@ from random import choice
 
 import mimesis
 
-from blueprints import create_app
-from blueprints.models import Post, User
+from api.blueprints import create_app
+from api.blueprints.models import Post, User
 
 MODELS = [Post, User]
 URL = '/api'

@@ -1,4 +1,4 @@
-graft blueprints/api
-graft blueprints/tests
-include blueprints/models.py
-include blueprints/__init__.py
+graft api/*
+graft api/blueprints/api
+graft api/blueprints/tests
+graft api/blueprints/*

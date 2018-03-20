@@ -5,8 +5,8 @@ from random import choice
 import mimesis
 from flask import request
 
-from blueprints import create_app
-from blueprints.models import Post, User
+from api.blueprints import create_app
+from api.blueprints.models import Post, User
 
 MODELS = [Post, User]
 URL = '/api'

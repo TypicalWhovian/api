@@ -3,8 +3,8 @@ import datetime
 import jwt
 from flask import current_app, jsonify, request
 
-from blueprints.api.utils import create_user, data_required, error, message, post_exists, token_required
-from blueprints.models import Post, User
+from api.blueprints.api.utils import create_user, data_required, error, message, post_exists, token_required
+from api.blueprints.models import Post, User
 from . import api
 
 

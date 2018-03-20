@@ -1,4 +1,4 @@
-from blueprints import create_app
+from api.blueprints import create_app
 app = create_app()
 
 

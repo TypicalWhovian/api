@@ -1,13 +1,13 @@
 from flask import Flask
 
-from blueprints.models import create_tables
-from config import Config
+from api.blueprints.models import create_tables
+from api.config import Config
 
 
 def create_app(testing=False):
     app = Flask(__name__)
     app.config.from_object(Config)
-    from blueprints.api import api
+    from api.blueprints.api import api
     app.register_blueprint(api, url_prefix='/api')
     db = create_tables(app, testing=testing)
     if testing:

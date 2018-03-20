@@ -1,7 +1,7 @@
 from flask import jsonify, request
 
-from blueprints.api.utils import create_user, error, message, token_required, user_exists, data_required
-from blueprints.models import Post, User
+from api.blueprints.api.utils import create_user, data_required, error, message, token_required, user_exists
+from api.blueprints.models import Post, User
 from . import api
 
 
