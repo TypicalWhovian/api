@@ -1,14 +1,10 @@
 import datetime
 
 import peewee
-from playhouse.migrate import PostgresqlMigrator
 from playhouse.shortcuts import model_to_dict
 from werkzeug.security import check_password_hash, generate_password_hash
 
 database = peewee.PostgresqlDatabase(None)
-
-
-migrator = PostgresqlMigrator(database)
 
 
 class BaseModel(peewee.Model):
