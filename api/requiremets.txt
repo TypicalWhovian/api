@@ -3,3 +3,4 @@ mimesis==2.0.0
 peewee==3.0.17
 psycopg2==2.7.4
 PyJWT==1.5.3
+PyYAML==3.12

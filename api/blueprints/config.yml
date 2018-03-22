@@ -1,0 +1,6 @@
+SECRET_KEY: '\xb7/\x1e\xd1]\xd6\x87\xcfS\x8a\xa20Q\x17W0\x1c\xe6\x9f*\x85Hk\xffW7\xaaH\xa4\xb1r\xaa'
+DATABASE: 'main_db'
+TEST_DATABASE: 'test_db'
+DB_USER: 'your_username'
+DB_PASSWORD: 'your_password'
+DB_HOST: 'localhost'

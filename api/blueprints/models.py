@@ -78,11 +78,10 @@ class Post(BaseModel):
 
 def create_tables(app, drop_tables=False, testing=False):
     db = app.config['DATABASE'] if not testing else app.config['TEST_DATABASE']
-    host = app.config['DB_HOST'] or 'localhost'
     database.init(database=db,
                   user=app.config['DB_USER'],
                   password=app.config['DB_PASSWORD'],
-                  host=host)
+                  host=app.config['DB_HOST'])
     with database:
         if drop_tables:
             database.drop_tables([Post, User])

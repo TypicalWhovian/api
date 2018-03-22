@@ -10,5 +10,6 @@ setup(
         'peewee',
         'psycopg2',
         'PyJWT',
+        'PyYAML',
     ],
 )
