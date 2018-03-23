@@ -21,8 +21,9 @@ def auth_login():
     password = data.get('password')
     if not any((email, username)) or password is None:
         return error('Both email/username and password are required.', 401)
-    user = User.select().where((User.email == email) |
-                               (User.username == username)).first()
+    user = User.select().where(
+        (User.email == email) | (User.username == username)
+    ).first()
     if user is None:
         return error('User does not exist.', 403)
     if not user.check_password(password):
@@ -41,8 +42,6 @@ def auth_login():
 @token_required()
 def add_post(current_user):
     data = request.get_json()
-    if not data:
-        return error('Data was not provided.', 403)
     if None in (data.get('title'), data.get('text')):
         return error('Both title and text are required.', 403)
     data['author'] = current_user
@@ -87,8 +86,9 @@ def search_posts(current_user):
     select_query = current_user.posts
     query = request.args.get('query')
     if query is not None:
-        select_query = select_query.where((Post.title.contains(query)) |
-                                          (Post.text.contains(query)))
+        select_query = select_query.where(
+            (Post.title.contains(query)) | (Post.text.contains(query))
+        )
     try:
         posts = [post.to_dict() for post in select_query]
     except AttributeError:
